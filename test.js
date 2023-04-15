@@ -267,7 +267,7 @@ let count = 1;
                     <div class="postilla">Unisciti a migliaia di lettori soddisfatti</div></div>
                 </div>
             </form>           
-            <div id="api-error-msg" style="color: red; margin-bottom: 1em;"></div>
+            <div id="api-error-msg" style="color: red; margin-bottom: 1em;font-size:13px;"></div>
             </div>
             </div>
             <div id="second-modal"></div>
