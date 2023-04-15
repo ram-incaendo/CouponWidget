@@ -35,7 +35,7 @@ let count = 1;
             document.getElementById("coupon-tab").style.marginBottom = "0px";
         }
         }
-        async function handleButton(nameOption, surnameOption, couponOption, idOfWidget = "") {  
+        async function handleButton(nameOption, surnameOption, couponOption, frmCount, idOfWidget = "") {              
         let campaign = "";
         const widgetId = widgetInfo.widgetID;
         const nameOfHost = widgetInfo.hostName;
@@ -50,9 +50,10 @@ let count = 1;
             campaign = splitParam[1];
             }
         }
-        name = nameOption === 1 ? document.getElementById("name").value : '';
-        email = document.getElementById("email").value;
-        surname = surnameOption === 1 ? document.getElementById("surname").value : '';
+        name = nameOption === 1 ? document.getElementsByClassName("input-name")[frmCount].value : '';
+        email = document.getElementsByClassName("input-email")[frmCount].value;
+        
+        surname = surnameOption === 1 ? document.getElementsByClassName("input-surname")[frmCount].value : '';
         couponCode = couponOption === 1 ? document.getElementById("coupon").value : '';
         let apiResp;
         const userData = {
@@ -84,18 +85,18 @@ let count = 1;
             }
             });
         if (apiResp && apiResp.toLowerCase() === "success") {
-            document.getElementById("first-modal").style.display = "none";
-            document.getElementById("second-modal").style.display = "block";
-            document.getElementById("second-modal").innerHTML = `<h2>Controlla la tua email</h2>
+            document.getElementsByClassName("first-modal")[frmCount].style.display = "none";
+            document.getElementsByClassName("second-modal")[frmCount].style.display = "block";
+            document.getElementsByClassName("second-modal")[frmCount].innerHTML = `<h2>Controlla la tua email</h2>
             <p>Completa la registrazione verificando il tuo profilo dalla email che ti abbiamo inviato a  <b>${email}</b>.</p>
             <p>Non hai ricevuto l’email? Inviala di nuovo o <a href="javascript:updateEmail();" ><b>Aggiorna il tuo indirizzo email</b></a></p>
             <p>Sei già registrato? <a href="https://app.dev.goodmorningitalia.it/login"><b>Fai il login qui</b></a></p>
             </div>`;
         }
         if (apiResp.toLowerCase() === "undefined") {
-            document.getElementById("api-error-msg").innerHTML = ``;
+            document.getElementsByClassName("api-err")[frmCount].innerHTML = ``;
         } else {
-            document.getElementById("api-error-msg").innerHTML = `* ${apiResp}`;
+            document.getElementsByClassName("api-err")[frmCount].innerHTML = `* ${apiResp}`;
         }
         }
         function ValidateEmail(input) {
@@ -161,7 +162,7 @@ let count = 1;
         const couponDetails = async () => {
         const couponCode = document.getElementById("coupon").value;
         const response = await fetch("http://api.dev.goodmorningitalia.it/coupon-types?$limit=50");
-        const myJson = await response.json(); //extract JSON from the http response
+        const myJson = await response.json();
         const coupon = myJson.data;
         const couponPrefix = couponCode.substring(0, 4);
         let couponType = coupon.find(
@@ -244,33 +245,50 @@ let count = 1;
         const statusOfWidget = statusObject[widgetData.status];
         const nameOption = statusObject[widgetMeta.should_name_mount];
         const surnameOption = statusObject[widgetMeta.should_surname_mount];
-        const couponOption = 1;
+        const couponOption = statusObject[widgetMeta.should_coupon_mount];
         
         const hostName = widgetData.host_name;
         widgetInfo = {
             widgetID: idOfWidget,
             hostName,
         }
-        element.innerHTML = statusOfWidget ? `<div id="first-modal" class="first-modal" style="display:block;"><div class="form-trial w-form">
+
+        let formHtml = `<div id="first-modal" class="first-modal" style="display:block;"><div class="form-trial w-form">
         <form id="wf-form-Trial-form" name="wf-form-Trial-form" data-name="Trial form" method="post" class="formformform" aria-label="Trial form">
             <div class="grid-1-1 form">
                 <input type="text" class="campo w-input input-name" maxlength="256" name="Name-form" data-name="Name form" placeholder="Nome..." id="name" required>                
                 <input type="text" class="campo w-node-_6e48be95-97ba-b3f5-451e-82c491c607da-91c607d6 w-input input-surname" maxlength="256" name="Cognome-form" data-name="Cognome form" placeholder="Cognome..." id="surname" required>
-            </div>
-            <div class="form">
+            </div>      
+            `;
+
+
+        let isCouponForm = couponOption ? `<div class="form">
                 <input type="email" class="campo w-input input-email" maxlength="256" name="Mail-form" data-name="Mail form" placeholder="La tua email..." id="email" required>               
             </div>
             <div class="grid-2-1">
-                <input type="text" class="campo w-input input-email" maxlength="256" name="coupon" data-name="coupon" placeholder="Codice coupon" id="coupon" required>
-                <div id="w-node" class="submit-flex" onclick="handleButton(1, 1, 1)">
+                <input type="text" class="campo w-input" maxlength="256" name="coupon" data-name="coupon" placeholder="Codice coupon" id="coupon" required>
+                <div id="w-node" class="submit-flex" onclick="handleButton(1, 1, 1, ${idOfForm})">
                     <input type="button" id="free-trial" value="Prova per 7 giorni" data-wait="Un istante..." class="submit test w-button">
                     <div class="postilla">Unisciti a migliaia di lettori soddisfatti</div></div>
                 </div>
             </form>           
-            <div id="api-error-msg" style="color: red; margin-bottom: 1em;font-size:13px;"></div>
+            <div id="api-error-msg" class="api-err" style="color: red; margin-bottom: 1em;"></div>
             </div>
             </div>
-            <div id="second-modal"></div>
-            `:'';        
+            <div id="second-modal" class="second-modal"></div>`:`<div class="grid-2-1">
+                <input type="email" class="campo w-input input-email" maxlength="256" name="Mail-form" data-name="Mail form" placeholder="La tua email..." id="email" required>
+                <div id="w-node" class="submit-flex" onclick="handleButton(1, 1, 0, ${idOfForm})">
+                    <input type="button" id="free-trial" value="Prova per 7 giorni" data-wait="Un istante..." class="submit test w-button">
+                    <div class="postilla">Unisciti a migliaia di lettori soddisfatti</div></div>
+                </div>
+            </form>           
+            <div id="api-error-msg" class="api-err" style="color: red; margin-bottom: 1em;"></div>
+            </div>
+            </div>
+            <div id="second-modal" class="second-modal"></div>`;
+
+        formHtml += isCouponForm;  
+
+        element.innerHTML = statusOfWidget ? formHtml:'';        
         });                
         };
