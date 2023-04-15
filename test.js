@@ -272,7 +272,7 @@ let count = 1;
                     <div class="postilla">Unisciti a migliaia di lettori soddisfatti</div></div>
                 </div>
             </form>           
-            <div id="api-error-msg" class="api-err" style="color: red; margin-bottom: 1em;"></div>
+            <div id="api-error-msg" class="api-err" style="color: red; margin-bottom: 1em;font-size:13px;"></div>
             </div>
             </div>
             <div id="second-modal" class="second-modal"></div>`:`<div class="grid-2-1">
@@ -282,7 +282,7 @@ let count = 1;
                     <div class="postilla">Unisciti a migliaia di lettori soddisfatti</div></div>
                 </div>
             </form>           
-            <div id="api-error-msg" class="api-err" style="color: red; margin-bottom: 1em;"></div>
+            <div id="api-error-msg" class="api-err" style="color: red; margin-bottom: 1em;font-size:13px;"></div>
             </div>
             </div>
             <div id="second-modal" class="second-modal"></div>`;
