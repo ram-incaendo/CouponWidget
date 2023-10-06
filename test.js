@@ -4,6 +4,10 @@ let count = 1;
         let surname = "";
         let widgetInfo = {};
 
+        if(window.location.search !== ''){
+            localStorage.setItem('url',window.location.search);
+        }
+
         const showError = (input) => {        
             const formField = input;
             formField.classList.remove('success');
@@ -72,6 +76,11 @@ let count = 1;
             return valid;
         }
 
+        function sanitizeUrlPramas(url) {
+            // expecting unwanted character at 1st position to removing
+            return `&${url.substring(1, url.length)}`;
+        }
+
         function updateEmail(frmCount) {
         document.getElementsByClassName("first-modal")[frmCount].style.display = "block";
         document.getElementsByClassName("api-err")[frmCount].innerHTML = ``;
@@ -119,6 +128,18 @@ let count = 1;
             campaign = splitParam[1];
             }
         }
+
+        let utmSource;
+
+        const queryParams = {};
+        let url = window.location.search;
+
+        if(url === '' && localStorage.getItem('url') !== null){
+            url = localStorage.getItem('url');
+        }
+            
+        const sanitizedUrl = sanitizeUrlPramas(url);
+
         name = nameOption === 1 ? document.getElementsByClassName("input-name")[frmCount].value.trim() : '';
         email = document.getElementsByClassName("input-email")[frmCount].value.trim();
         
@@ -149,8 +170,15 @@ let count = 1;
             };
 
             if (couponCode !== '') userData.couponCode = couponCode;
+
+            let authURL = `https://api.goodmorningitalia.it/auth?utm_referral=${widgetId}&utm_source=gmi&utm_campaign=${campaign}&utm_name=${nameOfHost}`;
+
+            authURL += sanitizedUrl;
+            utmSource = getUtmSource(sanitizedUrl);
+            authURL += utmSource;
+
             const response = await fetch(
-                `https://api.goodmorningitalia.it/auth?utm_referral=${widgetId}&utm_source=gmi&utm_campaign=${campaign}&utm_name=${nameOfHost}`,
+                authURL,
                 {
                 method: "POST",
                 headers: {
