@@ -81,6 +81,10 @@ let count = 1;
             return `&${url.substring(1, url.length)}`;
         }
 
+        function getUtmSource(url) {    
+            return !(url.includes('utm_source')) ? `utm_source='gmi'` : '';
+        }
+
         function updateEmail(frmCount) {
         document.getElementsByClassName("first-modal")[frmCount].style.display = "block";
         document.getElementsByClassName("api-err")[frmCount].innerHTML = ``;
