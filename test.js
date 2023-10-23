@@ -382,7 +382,7 @@ let count = 1;
             <div class="grid-2-1">
                 <input type="text" class="campo w-input" maxlength="256" name="coupon" data-name="coupon" placeholder="Codice coupon" id="coupon" required>
                 <div id="w-node" class="submit-flex" onclick="handleButton(1, 1, 1, ${idOfForm})">
-                    <input type="button" id="free-trial" value="Prova per 7 giorni" data-wait="Un istante..." class="submit test w-button">
+                    <input type="button" id="free-trial" value="Provalo ora" data-wait="Un istante..." class="submit test w-button">
                     <div class="postilla">Unisciti a migliaia di lettori soddisfatti</div></div>
                 </div>
             </form>           
@@ -392,7 +392,7 @@ let count = 1;
             <div id="second-modal" class="second-modal"></div>`:`<div class="grid-2-1">
                 <input type="email" class="campo w-input input-email" maxlength="256" name="Mail-form" data-name="Mail form" placeholder="La tua email..." id="email" required>
                 <div id="w-node" class="submit-flex" onclick="handleButton(1, 1, 0, ${idOfForm})">
-                    <input type="button" id="free-trial" value="Prova per 7 giorni" data-wait="Un istante..." class="submit test w-button">
+                    <input type="button" id="free-trial" value="Provalo ora" data-wait="Un istante..." class="submit test w-button">
                     <div class="postilla">Unisciti a migliaia di lettori soddisfatti</div></div>
                 </div>
             </form>           
