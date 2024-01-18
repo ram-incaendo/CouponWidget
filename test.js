@@ -175,7 +175,7 @@ let count = 1;
 
             if (couponCode !== '') userData.couponCode = couponCode;
 
-            let authURL = `https://api.goodmorningitalia.it/auth?utm_referral=${widgetId}&utm_source=gmi&utm_campaign=${campaign}&utm_name=${nameOfHost}`;
+            let authURL = `https://api.goodmorningitalia.it/auth?utm_referral=${widgetId}&utm_campaign=${campaign}&utm_name=${nameOfHost}`;
 
             authURL += sanitizedUrl;
             utmSource = getUtmSource(sanitizedUrl);
