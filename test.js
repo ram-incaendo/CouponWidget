@@ -148,7 +148,7 @@ let count = 1;
         email = document.getElementsByClassName("input-email")[frmCount].value.trim();
         
         surname = surnameOption === 1 ? document.getElementsByClassName("input-surname")[frmCount].value.trim() : '';
-        couponCode = couponOption === 1 ? document.getElementById("coupon").value.trim() : '';
+        couponCode = couponOption === 1 ? document.getElementsByClassName("input-coupon")[frmCount].value.trim() : '';
 
         let isFirstnameValid = checkFirstName(document.getElementsByClassName("input-name")[frmCount]),
         isLastnameValid = checkLastName(document.getElementsByClassName("input-surname")[frmCount]),
@@ -157,7 +157,7 @@ let count = 1;
         let isFormValid = false;
 
         if(couponOption){
-            isCouponValid = checkCoupon(document.getElementById("coupon"));
+            isCouponValid = checkCoupon(document.getElementsByClassName("input-coupon")[frmCount]);
             isFormValid = isFirstnameValid && isLastnameValid && isEmailValid && isCouponValid;
         }else{
             isFormValid = isFirstnameValid && isLastnameValid && isEmailValid;
@@ -384,7 +384,7 @@ let count = 1;
                 <input type="email" class="campo w-input input-email" maxlength="256" name="Mail-form" data-name="Mail form" placeholder="La tua email..." id="email" required>               
             </div>
             <div class="grid-2-1">
-                <input type="text" class="campo w-input" maxlength="256" name="coupon" data-name="coupon" placeholder="Codice coupon" id="coupon" required>
+                <input type="text" class="campo w-input input-coupon" maxlength="256" name="coupon" data-name="coupon" placeholder="Codice coupon" id="coupon" required>
                 <div id="w-node" class="submit-flex" onclick="handleButton(1, 1, 1, ${idOfForm})">
                     <input type="button" id="free-trial" value="Provalo ora" data-wait="Un istante..." class="submit test w-button">
                     <div class="postilla">Unisciti a migliaia di lettori soddisfatti</div></div>
@@ -395,7 +395,7 @@ let count = 1;
             </div>
             <div id="second-modal" class="second-modal"></div>`:`<div class="grid-2-1">
                 <input type="email" class="campo w-input input-email" maxlength="256" name="Mail-form" data-name="Mail form" placeholder="La tua email..." id="email" required>
-                <div id="w-node" class="submit-flex" onclick="handleButton(1, 1, 0, ${idOfForm})">
+                <div id="w-node" class="submit-flex" onclick="handleButton(1, 1, 1, ${idOfForm})">
                     <input type="button" id="free-trial" value="Provalo ora" data-wait="Un istante..." class="submit test w-button">
                     <div class="postilla">Unisciti a migliaia di lettori soddisfatti</div></div>
                 </div>
