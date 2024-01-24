@@ -81,8 +81,8 @@ let count = 1;
             return `&${url.substring(1, url.length)}`;
         }
 
-        function getUtmSource(url) {    
-            return !(url.includes('utm_source')) ? `utm_source='gmi'` : '';
+        function getUtmSource(url) {
+            return !(url.includes('utm_source')) ? `&utm_source='gmi'` : '';
         }
 
         function updateEmail(frmCount) {
@@ -117,7 +117,7 @@ let count = 1;
             document.getElementById("coupon-tab").style.marginBottom = "0px";
         }
         }
-        async function handleButton(nameOption, surnameOption, couponOption, frmCount, idOfWidget = "") {              
+        async function handleButton(nameOption, surnameOption, couponOption, frmCount, idOfWidget = "") { 
         let campaign = "";
         const widgetId = widgetInfo.widgetID;
         const nameOfHost = widgetInfo.hostName;
@@ -136,13 +136,13 @@ let count = 1;
         let utmSource;
 
         const queryParams = {};
-        let url = window.location.search;
+        let url = window.location.search || localStorage.getItem('url');
+        let sanitizedUrl = '';
 
-        if(url === '' && localStorage.getItem('url') !== null){
-            url = localStorage.getItem('url');
+        if (url) {
+            sanitizedUrl = sanitizeUrlPramas(url);
         }
             
-        const sanitizedUrl = sanitizeUrlPramas(url);
 
         name = nameOption === 1 ? document.getElementsByClassName("input-name")[frmCount].value.trim() : '';
         email = document.getElementsByClassName("input-email")[frmCount].value.trim();
@@ -180,6 +180,7 @@ let count = 1;
             authURL += sanitizedUrl;
             utmSource = getUtmSource(sanitizedUrl);
             authURL += utmSource;
+            console.log("==============>complete authURL", authURL);
 
             const response = await fetch(
                 authURL,
@@ -201,6 +202,7 @@ let count = 1;
                 }
                 });
             if (apiResp && apiResp.toLowerCase() === "success") {
+                localStorage.setItem('url', '');
                 document.getElementsByClassName("first-modal")[frmCount].style.display = "none";
                 document.getElementsByClassName("second-modal")[frmCount].style.display = "block";
                 document.getElementsByClassName("second-modal")[frmCount].innerHTML = `<h2>Controlla la tua email</h2>
@@ -279,7 +281,7 @@ let count = 1;
         }
         const couponDetails = async () => {
         const couponCode = document.getElementById("coupon").value;
-        const response = await fetch("http://api.goodmorningitalia.it/coupon-types?$limit=50");
+        const response = await fetch("https://api.goodmorningitalia.it/coupon-types?$limit=50");
         const myJson = await response.json();
         const coupon = myJson.data;
         const couponPrefix = couponCode.substring(0, 4);
@@ -364,6 +366,10 @@ let count = 1;
         const nameOption = statusObject[widgetMeta.should_name_mount];
         const surnameOption = statusObject[widgetMeta.should_surname_mount];
         const couponOption = statusObject[widgetMeta.should_coupon_mount];
+
+        console.log('name option ---------', nameOption);
+        console.log('surnameOption ---------', surnameOption);
+        console.log('couponOption ---------', couponOption);
         
         const hostName = widgetData.host_name;
         widgetInfo = {
@@ -385,7 +391,7 @@ let count = 1;
             </div>
             <div class="grid-2-1">
                 <input type="text" class="campo w-input input-coupon" maxlength="256" name="coupon" data-name="coupon" placeholder="Codice coupon" id="coupon" required>
-                <div id="w-node" class="submit-flex" onclick="handleButton(1, 1, 1, ${idOfForm})">
+                <div id="w-node" class="submit-flex" onclick="handleButton(${nameOption}, ${surnameOption}, ${couponOption}, ${idOfForm})">
                     <input type="button" id="free-trial" value="Provalo ora" data-wait="Un istante..." class="submit test w-button">
                     <div class="postilla">Unisciti a migliaia di lettori soddisfatti</div></div>
                 </div>
@@ -395,7 +401,7 @@ let count = 1;
             </div>
             <div id="second-modal" class="second-modal"></div>`:`<div class="grid-2-1">
                 <input type="email" class="campo w-input input-email" maxlength="256" name="Mail-form" data-name="Mail form" placeholder="La tua email..." id="email" required>
-                <div id="w-node" class="submit-flex" onclick="handleButton(1, 1, 1, ${idOfForm})">
+                <div id="w-node" class="submit-flex" onclick="handleButton(${nameOption}, ${surnameOption}, ${couponOption}, ${idOfForm})">
                     <input type="button" id="free-trial" value="Provalo ora" data-wait="Un istante..." class="submit test w-button">
                     <div class="postilla">Unisciti a migliaia di lettori soddisfatti</div></div>
                 </div>
